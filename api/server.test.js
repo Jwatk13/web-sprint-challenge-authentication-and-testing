@@ -48,7 +48,7 @@ describe('HTTP endpoints', () => {
       let result = await request(server).get('/api/jokes');
       expect(result.body).toMatchObject({ message: "token required" });
     });
-    test('[2]', async () => {
+    test('[2] recieved array of 3 jokes', async () => {
       let result = await request(server).get('/api/jokes').set({authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJ1c2VybmFtZSI6IkNhcHRhaW4gTWFydmVsIiwiaWF0IjoxNjU5MzkyNzM0LCJleHAiOjE2NTk0NzkxMzR9.V0KKEA9IRFFL9RHfRL-PvJyK31mi8swAFBpYjRMQVZI'});
       expect(result.body).toHaveLength(3)
     });
