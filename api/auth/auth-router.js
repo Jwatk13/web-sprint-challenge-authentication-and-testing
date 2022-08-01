@@ -41,7 +41,7 @@ router.post('/register', validateUser, checkUsernameFree, (req, res, next) => {
       .catch(next)
 });
 
-router.post('/login', validateUser, validateUsername, (req, res, next) => {
+router.post('/login', validateUsername, validateUser, (req, res, next) => {
   // res.end('implement login, please!');
   /*
     IMPLEMENT
@@ -66,19 +66,20 @@ router.post('/login', validateUser, validateUsername, (req, res, next) => {
     4- On FAILED login due to `username` not existing in the db, or `password` being incorrect,
       the response body should include a string exactly as follows: "invalid credentials".
   */
-  if (bcrypt.compareSync(req.body.password, req.users.password)) {
+  const { password } = req.body
+  if (bcrypt.compareSync(password, req.user.password)) {
     const token = buildToken(req.user)
     res.json({
-      message: `welcome, ${req.users.username}`,
+      message: `welcome, ${req.user.username}`,
       token,
     })
   } next()
 });
 
-function buildToken(users) {
+function buildToken(user) {
   const payload = {
-    subject: users.id,
-    username: users.username,
+    subject: user.id,
+    username: user.username,
   }
   const options = {
     expiresIn: '1d',

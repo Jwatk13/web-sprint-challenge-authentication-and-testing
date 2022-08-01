@@ -10,10 +10,9 @@ function validateUser(req, res, next) {
     const { username, password } = req.body
     if (!username || !password) {
         return next({ message: "username and password required" })
-    } 
+    }
+    next() 
 }
-
-
 
 async function checkUsernameFree(req, res, next) {
     try {
@@ -28,19 +27,20 @@ async function checkUsernameFree(req, res, next) {
     }
   }
 
-    const validateUsername = async (req, res, next) => {
-        try {
-            const [user] = await findBy({ username: req.body.username })
-            if (!user) { 
-                next({ message: 'invalid credentials' })
-            } else {
-                req.user = user
-                next()
-            }
-            } catch (err) {
-                next(err)
+async function validateUsername (req, res, next) {
+    try {
+        const [user] = await findBy({ username: req.body.username })
+        if (!user) { 
+            next({ message: 'invalid credentials' })
+        } else {
+            req.user = user
+            next()
         }
+        } catch (err) {
+            next(err)
     }
+}
+
 module.exports = {
     validateUser,
     checkUsernameFree,
