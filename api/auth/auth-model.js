@@ -10,6 +10,7 @@ function findBy(filter) {
     .where(filter);
 }
 
+
 module.exports = {
     insert,
     findBy,

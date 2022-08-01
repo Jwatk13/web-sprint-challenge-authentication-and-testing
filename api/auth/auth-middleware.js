@@ -8,10 +8,9 @@ const { findBy } = require('./auth-model');
 
 function validateUser(req, res, next) {
     const { username, password } = req.body
-    if (!username || !password) {
+    if (!username || !password) 
         return next({ message: "username and password required" })
-    }
-    next() 
+   next() 
 }
 
 async function checkUsernameFree(req, res, next) {
@@ -29,11 +28,13 @@ async function checkUsernameFree(req, res, next) {
 
 async function validateUsername (req, res, next) {
     try {
-        const [user] = await findBy({ username: req.body.username })
-        if (!user) { 
+        const [user] = await findBy({ username: req.body.username });
+        const [password] = await findBy({ password: req.body.password });
+        if (!user && !password) { 
             next({ message: 'invalid credentials' })
         } else {
-            req.user = user
+            req.user = user,
+            req.password = password,
             next()
         }
         } catch (err) {

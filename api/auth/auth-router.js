@@ -41,7 +41,7 @@ router.post('/register', validateUser, checkUsernameFree, (req, res, next) => {
       .catch(next)
 });
 
-router.post('/login', validateUsername, validateUser, (req, res, next) => {
+router.post('/login', validateUser, validateUsername, (req, res, next) => {
   // res.end('implement login, please!');
   /*
     IMPLEMENT
