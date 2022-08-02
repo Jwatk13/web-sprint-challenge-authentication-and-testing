@@ -28,13 +28,11 @@ async function checkUsernameFree(req, res, next) {
 
 async function validateUsername (req, res, next) {
     try {
-        const [user] = await findBy({ username: req.body.username });
-        const [password] = await findBy({ password: req.body.password });
-        if (!user && !password) { 
+        const [user] = await findBy({ username: req.body.username })
+        if (!user) { 
             next({ message: 'invalid credentials' })
         } else {
             req.user = user,
-            req.password = password,
             next()
         }
         } catch (err) {

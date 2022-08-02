@@ -73,7 +73,7 @@ router.post('/login', validateUser, validateUsername, (req, res, next) => {
       message: `welcome, ${req.user.username}`,
       token,
     })
-  } next()
+  } next({ message: 'invalid credentials' })
 });
 
 function buildToken(user) {

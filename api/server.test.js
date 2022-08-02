@@ -1,7 +1,7 @@
 // Write your tests here
 const db = require('../data/dbConfig');
 const request = require('supertest');
-const server = require('./server')
+const server = require('./server');
 
 test('sanity', () => {
   expect(true).not.toBe(false)
@@ -42,6 +42,10 @@ describe('HTTP endpoints', () => {
       let result = await request(server).post('/api/auth/login').send({ password: "foobar" });
       expect(result.body).toMatchObject({ message: "username and password required" });
     });
+    test('[3] on successful login a token is returned', async () => {
+      let result = await request(server).post('/api/auth/login').send({ username: "foobar", password: "foobar" })
+      expect(result.body.token).toBeDefined()
+    });
   });
   describe('[GET] /api/jokes', () => {
     test('[1] error if no token received', async () => {
@@ -49,8 +53,10 @@ describe('HTTP endpoints', () => {
       expect(result.body).toMatchObject({ message: "token required" });
     });
     test('[2] recieved array of 3 jokes', async () => {
-      let result = await request(server).get('/api/jokes').set({authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJ1c2VybmFtZSI6IkNhcHRhaW4gTWFydmVsIiwiaWF0IjoxNjU5MzkyNzM0LCJleHAiOjE2NTk0NzkxMzR9.V0KKEA9IRFFL9RHfRL-PvJyK31mi8swAFBpYjRMQVZI'});
-      expect(result.body).toHaveLength(3)
+      
     });
   });
 });
+
+//  result = await request(server).get('/api/jokes').set({authorization: token});
+//       expect(result.body).toHaveLength(3);
